@@ -1,13 +1,14 @@
+package ai;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-// 定义一个简单的 Student 类来表示学生对象 (这部分和之前的例子一样)
+// 定义一个简单的 ai.Student 类来表示学生对象 (这部分和之前的例子一样)
 class Student {
     private int id;
     private String name;
@@ -161,7 +162,7 @@ public class SimpleStudentMySQLApp {
                 String name = resultSet.getString("name");
                 int age = resultSet.getInt("age");
 
-                // 6. 用获取到的数据创建一个 Student 对象，并将其添加到列表中。
+                // 6. 用获取到的数据创建一个 ai.Student 对象，并将其添加到列表中。
                 studentList.add(new Student(id, name, age));
             }
         }

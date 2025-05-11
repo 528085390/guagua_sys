@@ -1,0 +1,72 @@
+-- 创建用户表
+CREATE TABLE `t_user` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `username` varchar(50) NOT NULL COMMENT '用户名',
+  `password` varchar(100) NOT NULL COMMENT '密码',
+  `role` varchar(20) NOT NULL COMMENT '角色(ADMIN/TEACHER/STUDENT)',
+  `status` tinyint NOT NULL DEFAULT '0' COMMENT '状态(0-正常,1-禁用)',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_username` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
+
+-- 创建教师表
+CREATE TABLE `t_teacher` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `user_id` bigint NOT NULL COMMENT '用户ID',
+  `teacher_no` varchar(20) NOT NULL COMMENT '教师工号',
+  `department_id` bigint NOT NULL COMMENT '院系ID',
+  `name` varchar(50) NOT NULL COMMENT '教师姓名',
+  `phone` varchar(20) DEFAULT NULL COMMENT '联系电话',
+  `email` varchar(50) DEFAULT NULL COMMENT '邮箱',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_teacher_no` (`teacher_no`),
+  KEY `idx_department_id` (`department_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='教师表';
+
+-- 创建课程表
+CREATE TABLE `t_course` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `course_no` varchar(20) NOT NULL COMMENT '课程编号',
+  `course_name` varchar(100) NOT NULL COMMENT '课程名称',
+  `teacher_id` bigint NOT NULL COMMENT '授课教师ID',
+  `major_id` bigint NOT NULL COMMENT '适用专业ID',
+  `grade` tinyint NOT NULL COMMENT '适用年级',
+  `course_type` tinyint NOT NULL COMMENT '课程性质(1-必修,2-选修)',
+  `credit` decimal(3,1) NOT NULL COMMENT '学分',
+  `is_public` tinyint NOT NULL DEFAULT '0' COMMENT '是否公开(0-否,1-是)',
+  `status` tinyint NOT NULL COMMENT '课程状态(1-已提交,2-审核通过,3-审核不通过,4-公开,5-隐藏)',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_course_no` (`course_no`),
+  KEY `idx_teacher_id` (`teacher_id`),
+  KEY `idx_major_id` (`major_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='课程表';
+
+-- 创建院系表
+CREATE TABLE `t_department` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `dept_no` varchar(10) NOT NULL COMMENT '院系编号',
+  `dept_name` varchar(50) NOT NULL COMMENT '院系名称',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_dept_no` (`dept_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='院系表';
+
+-- 创建专业表
+CREATE TABLE `t_major` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `major_no` varchar(10) NOT NULL COMMENT '专业编号',
+  `major_name` varchar(50) NOT NULL COMMENT '专业名称',
+  `department_id` bigint NOT NULL COMMENT '所属院系ID',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_major_no` (`major_no`),
+  KEY `idx_department_id` (`department_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='专业表';
